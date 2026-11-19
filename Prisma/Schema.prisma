@@ -1,0 +1,29 @@
+// OmniLens AI — Prisma schema v1 (exactly as specified in the Memo / master prompt)
+// Production database: PostgreSQL (Neon or Supabase free tier).
+// DATABASE_URL comes from the environment only — never commit a real .env.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Memory {
+  id        String   @id @default(cuid())
+  text      String
+  category  String
+  retention String
+  consent   String
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String
+  memoryId   String?
+  deletionId String?
+  createdAt  DateTime @default(now())
+}
